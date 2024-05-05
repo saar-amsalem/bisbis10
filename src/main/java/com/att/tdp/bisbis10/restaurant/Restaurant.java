@@ -19,7 +19,7 @@ public class Restaurant {
     private Long id;
     @Column(unique = true)
     private String name;
-    private Float rating;
+    private Float averageRating;
     @JsonProperty("isKosher")
     private Boolean isKosher;
     @ElementCollection
@@ -55,12 +55,12 @@ public class Restaurant {
         this.name = name;
     }
 
-    public Float getRating() {
-        return rating;
+    public Float getAverageRating() {
+        return averageRating;
     }
 
-    public void setRating(Float rating) {
-        this.rating = rating;
+    public void setAverageRating(Float rating) {
+        this.averageRating = rating;
     }
 
     public Boolean getIsKosher() {

@@ -1,5 +1,7 @@
 package com.att.tdp.bisbis10.order;
 
+import com.att.tdp.bisbis10.dishes.Dish;
+import com.att.tdp.bisbis10.orderItem.OrderItem;
 import com.att.tdp.bisbis10.restaurant.Restaurant;
 import com.att.tdp.bisbis10.restaurant.RestaurantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,13 @@ public class OrderService {
             throw new IllegalStateException("No restaurant found with id : " + order.getRestaurantId());
         }
         Restaurant restaurant = optionalRestaurant.get();
-
+        List<Dish> dishes = restaurant.getDishes();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Optional<Dish> optionalDishToUpdate = dishes.stream().filter(dishOfList -> dishOfList.getID().equals(orderItem.getDishId())).findFirst();
+            if (optionalDishToUpdate.isEmpty()) {
+                throw new IllegalStateException("No dish found with id : " + orderItem.getDishId() + " at this restaurant, order is not allowed !");
+            }
+        }
         Order managedOrder = new Order(order.getRestaurantId(), order.getOrderItems());
         orderRepo.save(managedOrder);
 

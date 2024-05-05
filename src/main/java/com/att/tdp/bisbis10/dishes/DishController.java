@@ -59,7 +59,7 @@ public class DishController {
         }
     }
 
-    @GetMapping("/{id}/dish")
+    @GetMapping("/{id}/dishes")
     public ResponseEntity<Object> getDishesByRestaurantId(@PathVariable Long id) {
         try {
             return ResponseEntity.status(200).body(dishService.getDishesByRestaurant(id));

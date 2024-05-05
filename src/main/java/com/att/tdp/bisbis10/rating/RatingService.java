@@ -22,7 +22,7 @@ public class RatingService {
             throw new IllegalStateException("No restaurant found with id : " + id);
         }
         Restaurant currentRestaurant = optionalRestaurant.get();
-        currentRestaurant.setRating(rating);
+        currentRestaurant.setAverageRating(rating);
         restaurantRepo.save(currentRestaurant);
     }
 }

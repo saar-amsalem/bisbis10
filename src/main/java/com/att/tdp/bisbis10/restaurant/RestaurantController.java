@@ -17,10 +17,16 @@ public class RestaurantController {
 
     @GetMapping
     public ResponseEntity<Object> getAllRestaurants(@RequestParam(required = false) String cuisine) {
-        if (cuisine != null) {
-            return ResponseEntity.status(200).body(restaurantService.getRestaurantsByCuisine(cuisine));
+        try {
+            if (cuisine != null) {
+                return ResponseEntity.status(200).body(restaurantService.getRestaurantsByCuisine(cuisine));
+            }
+            return ResponseEntity.status(200).body(restaurantService.getAllRestaurants());
         }
-        return ResponseEntity.status(200).body(restaurantService.getAllRestaurants());
+        catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/{id}")
@@ -43,7 +49,10 @@ public class RestaurantController {
             return ResponseEntity.status(201).body(restaurantService.addRestaurant(restaurant));
         }
         catch (IllegalStateException e) {
-            return ResponseEntity.status(403).body(e.getMessage());
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
@@ -66,6 +75,9 @@ public class RestaurantController {
         try {
             restaurantService.deleteRestaurant(id);
             return ResponseEntity.noContent().build();
+        }
+        catch (IllegalStateException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
         catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());

@@ -63,6 +63,10 @@ public class RestaurantService {
     }
 
     public void deleteRestaurant(Long restaurantId) {
+        Optional<Restaurant> restaurant = restaurantRepo.findById(restaurantId);
+        if(restaurant.isEmpty()) {
+            throw new IllegalStateException("No restaurant found with id : " + restaurantId);
+        }
         restaurantRepo.deleteById(restaurantId);
     }
 
