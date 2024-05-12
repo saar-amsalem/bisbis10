@@ -25,46 +25,37 @@ class RatingControllerTest {
     }
 
     @Test
-    void addRating_Success() {
-        // Arrange
+    void addRatingSuccess() {
         RatingDataTransferObject ratingData = new RatingDataTransferObject(1L, 4.5F);
         doNothing().when(ratingService).addRating(1L, 4.5F);
 
-        // Act
         ResponseEntity<Object> response = ratingController.addRating(ratingData);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
 
     @Test
-    void addRating_RestaurantNotFound() {
-        // Arrange
+    void addRatingRestaurantNotFound() {
         RatingDataTransferObject ratingData = new RatingDataTransferObject(1L, 4.5F);
         doThrow(new IllegalStateException("Restaurant not found"))
                 .when(ratingService).addRating(1L, 4.5F);
 
-        // Act
         ResponseEntity<Object> response = ratingController.addRating(ratingData);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Restaurant not found", response.getBody());
     }
 
 
     @Test
-    void addRating_Exception() {
-        // Arrange
+    void addRatingException() {
         RatingDataTransferObject ratingData = new RatingDataTransferObject(1L, 4.5F);
         doThrow(new RuntimeException("Something went wrong"))
                 .when(ratingService).addRating(1L, 4.5F);
 
-        // Act
         ResponseEntity<Object> response = ratingController.addRating(ratingData);
 
-        // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Something went wrong", response.getBody());
     }

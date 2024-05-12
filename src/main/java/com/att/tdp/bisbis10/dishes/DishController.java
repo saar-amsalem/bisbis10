@@ -18,7 +18,10 @@ public class DishController {
     @PostMapping("/{id}/dish")
     public ResponseEntity<Object> addDish(@PathVariable Long id, @RequestBody DishDataTransferObject dishDataTransferObject) {
         try {
-            Dish dish = new Dish(dishDataTransferObject.getName(),dishDataTransferObject.getDescription(),dishDataTransferObject.getPrice());
+            String name = dishDataTransferObject.getName();
+            String description = dishDataTransferObject.getDescription();
+            Long price = dishDataTransferObject.getPrice();
+            Dish dish = new Dish(name, description, price);
             dishService.addDish(id, dish);
             return ResponseEntity.status(201).body(dish);
         }
@@ -33,7 +36,10 @@ public class DishController {
     @PutMapping("/{id}/dish/{dishId}")
     public ResponseEntity<Object> updateDish(@PathVariable Long id,@PathVariable Long dishId, @RequestBody DishDataTransferObject dishDataTransferObject) {
         try {
-            Dish dish = new Dish(dishDataTransferObject.getName(),dishDataTransferObject.getDescription(),dishDataTransferObject.getPrice());
+            String name = dishDataTransferObject.getName();
+            String description = dishDataTransferObject.getDescription();
+            Long price = dishDataTransferObject.getPrice();
+            Dish dish = new Dish(name, description, price);
             dishService.updateDish(id, dishId, dish);
             return ResponseEntity.ok().build();
         }

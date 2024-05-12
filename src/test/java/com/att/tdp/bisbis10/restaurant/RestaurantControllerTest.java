@@ -1,6 +1,5 @@
 package com.att.tdp.bisbis10.restaurant;
 
-import com.att.tdp.bisbis10.restaurant.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,8 +28,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    void getAllRestaurants_WithCuisine() {
-        // Arrange
+    void getAllRestaurantsWithCuisine() {
         String cuisine = "Asian";
         List<String> cuisines = new ArrayList<>();
         cuisines.add(cuisine);
@@ -40,17 +38,14 @@ class RestaurantControllerTest {
         restaurants.add(restaurant);
         when(restaurantService.getRestaurantsByCuisine(cuisine)).thenReturn(restaurants);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.getAllRestaurants(cuisine);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(restaurants, response.getBody());
     }
 
     @Test
-    void getAllRestaurants_WithoutCuisine() {
-        // Arrange
+    void getAllRestaurantsWithoutCuisine() {
         List<Restaurant> restaurants = new ArrayList<>();
         String cuisine1 = "Italian";
         String cuisine2 = "Spanish";
@@ -66,17 +61,14 @@ class RestaurantControllerTest {
         restaurants.add(restaurant2);
         when(restaurantService.getAllRestaurants()).thenReturn(restaurants);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.getAllRestaurants(null);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(restaurants, response.getBody());
     }
 
     @Test
-    void getRestaurant_ExistingId() {
-        // Arrange
+    void getRestaurantExistingId() {
         Long id = 1L;
         String cuisine = "Indian";
         List<String> cuisines = new ArrayList<>();
@@ -85,31 +77,25 @@ class RestaurantControllerTest {
         restaurant.setId(id);
         when(restaurantService.getRestaurantByID(id)).thenReturn(restaurant);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.getRestaurant(id);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(restaurant, response.getBody());
     }
 
     @Test
-    void getRestaurant_NonExistingId() {
-        // Arrange
+    void getRestaurantNonExistingId() {
         Long id = 999L;
         when(restaurantService.getRestaurantByID(id)).thenThrow(new IllegalStateException("Restaurant Not Found !"));
 
-        // Act
         ResponseEntity<Object> response = restaurantController.getRestaurant(id);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Restaurant Not Found !", response.getBody());
     }
 
     @Test
-    void addRestaurant_Success() {
-        // Arrange
+    void addRestaurantSuccess() {
         String cuisine = "Israeli";
         List<String> cuisines = new ArrayList<>();
         cuisines.add(cuisine);
@@ -117,17 +103,14 @@ class RestaurantControllerTest {
         restaurant.setId(1L);
         when(restaurantService.addRestaurant(restaurant)).thenReturn(restaurant);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.addRestaurant(restaurant);
 
-        // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(restaurant, response.getBody());
     }
 
     @Test
-    void addRestaurant_Conflict() {
-        // Arrange
+    void addRestaurantConflict() {
         String cuisine = "Israeli";
         List<String> cuisines = new ArrayList<>();
         cuisines.add(cuisine);
@@ -135,17 +118,14 @@ class RestaurantControllerTest {
         restaurant.setId(1L);
         when(restaurantService.addRestaurant(restaurant)).thenThrow(new IllegalStateException("Restaurant already exists !"));
 
-        // Act
         ResponseEntity<Object> response = restaurantController.addRestaurant(restaurant);
 
-        // Assert
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertEquals("Restaurant already exists !", response.getBody());
     }
 
     @Test
-    void updateRestaurant_ExistingId() {
-        // Arrange
+    void updateRestaurantExistingId() {
         String cuisine = "Israeli";
         List<String> cuisines = new ArrayList<>();
         cuisines.add(cuisine);
@@ -153,17 +133,14 @@ class RestaurantControllerTest {
         restaurant.setId(1L);
         doNothing().when(restaurantService).updateRestaurant(1L, restaurant);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.updateRestaurant(1L, restaurant);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(restaurant, response.getBody());
     }
 
     @Test
-    void updateRestaurant_NonExistingId() {
-        // Arrange
+    void updateRestaurantNonExistingId() {
         Long id = 999L;
         String cuisine = "Israeli";
         List<String> cuisines = new ArrayList<>();
@@ -172,37 +149,29 @@ class RestaurantControllerTest {
         restaurant.setId(id);
         doThrow(new IllegalStateException("Restaurant Not Found !")).when(restaurantService).updateRestaurant(id, restaurant);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.updateRestaurant(id, restaurant);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Restaurant Not Found !", response.getBody());
     }
 
     @Test
-    void deleteRestaurant_ExistingId() {
-        // Arrange
+    void deleteRestaurantExistingId() {
         Long id = 1L;
         doNothing().when(restaurantService).deleteRestaurant(id);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.deleteRestaurant(id);
 
-        // Assert
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
-    void deleteRestaurant_NonExistingId() {
-        // Arrange
+    void deleteRestaurantNonExistingId() {
         Long id = 999L;
         doThrow(new IllegalStateException("Restaurant Not Found !")).when(restaurantService).deleteRestaurant(id);
 
-        // Act
         ResponseEntity<Object> response = restaurantController.deleteRestaurant(id);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Restaurant Not Found !", response.getBody());
     }
